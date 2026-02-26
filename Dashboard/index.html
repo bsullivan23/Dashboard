@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sacramento&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <button id="theme-toggle" class="icon-btn theme-toggle" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
+        <svg id="theme-icon-moon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg id="theme-icon-sun" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+    <div class="container">
+        <header>
+            <h1 class="page-title">Dashboard</h1>
+            <h2 id="clock">00:00</h2>
+            <p id="date">Loading date...</p>
+        </header>
+
+        <nav id="panel-tabs" class="panel-tabs"></nav>
+
+        <img src="sticker.png" alt="Decorative botanical sticker" class="botanical-sticker" id="botanical-sticker">
+        <img src="moth-sticker.png" alt="Decorative moth sticker" class="moth-sticker" id="moth-sticker">
+        <img src="raspberry-sticker.png" alt="Decorative raspberry sticker" class="raspberry-sticker"
+            id="raspberry-sticker">
+
+        <main id="dashboard-content">
+            <!-- Categories will be rendered here -->
+        </main>
+
+        <button id="fab" class="fab" title="Options" aria-label="Add Item">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+
+    <!-- Add/Edit Link Modal -->
+    <div class="modal" id="link-modal">
+        <h2 id="link-modal-title">Add Link</h2>
+        <form id="link-form">
+            <input type="hidden" id="link-id">
+            <div class="form-group">
+                <label for="link-url">URL</label>
+                <input type="url" id="link-url" required placeholder="https://example.com" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="link-name">Name</label>
+                <input type="text" id="link-name" required placeholder="Example" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="link-description">Description <span
+                        style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted)">(Optional)</span></label>
+                <input type="text" id="link-description" placeholder="A short description..." autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="link-category">Category</label>
+                <select id="link-category" required></select>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-text cancel-modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add/Edit Panel Modal -->
+    <div class="modal" id="panel-modal">
+        <h2 id="panel-modal-title">Add Panel</h2>
+        <form id="panel-form">
+            <input type="hidden" id="panel-id">
+            <div class="form-group">
+                <label for="panel-name">Panel Name</label>
+                <input type="text" id="panel-name" required placeholder="Work, Personal, etc." autocomplete="off">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-text cancel-modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add/Edit Category Modal -->
+    <div class="modal" id="category-modal">
+        <h2 id="category-modal-title">Add Category</h2>
+        <form id="category-form">
+            <input type="hidden" id="category-id">
+            <div class="form-group">
+                <label for="category-name">Category Name</label>
+                <input type="text" id="category-name" required placeholder="Work, Social, etc." autocomplete="off">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-text cancel-modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Action Menu (for FAB) -->
+    <div class="action-menu" id="action-menu">
+        <button id="btn-add-link" class="menu-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            Add Link
+        </button>
+        <button id="btn-add-category" class="menu-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Add Category
+        </button>
+        <button id="btn-add-panel" class="menu-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+            Add Panel
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
